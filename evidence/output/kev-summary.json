@@ -1,0 +1,157 @@
+{
+  "retrieved": "2026-10-16",
+  "source": "https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json",
+  "catalogue_version": "2026.10.16",
+  "date_released": "2026-10-16T17:15:48.8752Z",
+  "total": 1748,
+  "known_ransomware_use": 361,
+  "added_by_year": {
+    "2021": 311,
+    "2022": 555,
+    "2023": 187,
+    "2024": 186,
+    "2025": 245,
+    "2026": 264
+  },
+  "ransomware_by_year_added": {
+    "2021": 84,
+    "2022": 132,
+    "2023": 43,
+    "2024": 44,
+    "2025": 31,
+    "2026": 27
+  },
+  "top_vendors": [
+    [
+      "Microsoft",
+      390
+    ],
+    [
+      "Cisco",
+      101
+    ],
+    [
+      "Apple",
+      95
+    ],
+    [
+      "Adobe",
+      82
+    ],
+    [
+      "Google",
+      75
+    ],
+    [
+      "Oracle",
+      46
+    ],
+    [
+      "Apache",
+      41
+    ],
+    [
+      "Ivanti",
+      36
+    ],
+    [
+      "Fortinet",
+      32
+    ],
+    [
+      "Linux",
+      31
+    ],
+    [
+      "Citrix",
+      27
+    ],
+    [
+      "D-Link",
+      26
+    ],
+    [
+      "VMware",
+      26
+    ],
+    [
+      "SonicWall",
+      19
+    ],
+    [
+      "Synacor",
+      19
+    ]
+  ],
+  "groups": {
+    "Edge and remote access (VPN, firewall, gateway)": {
+      "risks": "R01, R06, R16",
+      "vendors": [
+        "Fortinet",
+        "Ivanti",
+        "Citrix",
+        "Palo Alto Networks",
+        "SonicWall",
+        "Cisco",
+        "F5",
+        "Juniper",
+        "Check Point",
+        "Zyxel"
+      ],
+      "entries": 265,
+      "added_last_12_months": 59,
+      "known_ransomware_use": 67
+    },
+    "Windows, Office and Exchange (Microsoft)": {
+      "risks": "R01, R02, R08",
+      "vendors": [
+        "Microsoft"
+      ],
+      "entries": 390,
+      "added_last_12_months": 44,
+      "known_ransomware_use": 117
+    },
+    "Virtualisation and backup/file transfer": {
+      "risks": "R01, R12",
+      "vendors": [
+        "VMware",
+        "Progress",
+        "Veeam"
+      ],
+      "entries": 39,
+      "added_last_12_months": 1,
+      "known_ransomware_use": 17
+    },
+    "Web, mail and collaboration servers": {
+      "risks": "R06, R14",
+      "vendors": [
+        "Apache",
+        "Atlassian",
+        "Roundcube",
+        "Synacor",
+        "Zimbra",
+        "WordPress",
+        "Jenkins",
+        "GitLab",
+        "PaperCut"
+      ],
+      "entries": 107,
+      "added_last_12_months": 20,
+      "known_ransomware_use": 26
+    },
+    "Printers, cameras and IoT devices": {
+      "risks": "R16",
+      "vendors": [
+        "D-Link",
+        "TP-Link",
+        "NETGEAR",
+        "QNAP",
+        "MikroTik",
+        "Mitel"
+      ],
+      "entries": 63,
+      "added_last_12_months": 5,
+      "known_ransomware_use": 16
+    }
+  }
+}
