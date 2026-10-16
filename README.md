@@ -14,6 +14,8 @@ I picked my own university because it is an organisation I know from the inside 
 | Statement of Applicability (93 Annex A controls, applicability, justification, implementation status, linked risks) | Done | `soa/` |
 | Business Impact Analysis, one-page continuity plan and tabletop exercise for exam registration and grade recording | Done | `bcm/` |
 | Risk heatmap and KPI dashboard (Python, reads the register; static HTML page plus PNG charts) | Done | `dashboard/` |
+| Evidence for likelihood scores: CISA KEV refresh script, reported incidents at German universities, review of the 18 likelihoods | Done | `evidence/` |
+| Mapping of the 18 risks to BSI IT-Grundschutz, with Saarland IT-SiG SL and NIS2 notes (replaces the TISAX idea, which suits automotive suppliers, not a university) | Done | `grundschutz/` |
 
 ## Risk register
 
@@ -55,6 +57,17 @@ python3 risk_dashboard.py ../risk-register/saarland-university-risk-register.xls
 ```
 
 `--as-of` sets the reporting date used for overdue checks (default: today). Scores, ratings and overdue flags are recalculated from likelihood, impact, status and due date, and the rating thresholds come from the Scoring Method sheet, so editing the register and re-running is enough. On first run the script downloads Source Serif 4 and IBM Plex from Google Fonts into `dashboard/.fonts/`; offline it falls back to the default font.
+
+## Evidence from public data
+
+- `evidence/kev_refresh.py`: downloads the CISA Known Exploited Vulnerabilities catalogue (standard library only) and writes `evidence/output/kev-summary.md` and `.json`: entries per year, share with known ransomware use, and counts per technology group tied to register risks. Run `python3 kev_refresh.py`.
+- `evidence/incidents.md`: aggregate figures and named incidents at German universities (HIS-HE 2025, DFN 2025, KonBriefing), each with its source.
+- `evidence/likelihood-review.md`: the 18 register likelihoods against that data. Result: 7 are supported by public data, 1 indirectly, and 10 have no public evidence, so most likelihoods are still judgement. The register itself is unchanged.
+- `evidence/sources.md`: sources with retrieval dates, and the data sources that could not be reached.
+
+## IT-Grundschutz mapping
+
+`grundschutz/mapping.md` maps each risk to BSI IT-Grundschutz modules and sets out which German rules apply: IT-SiG SL for Saarland (whether the university is a covered body is still open), the Länder rules for Hochschulen, and NIS2, where Hochschulen are not clearly in scope.
 
 ## How to use it
 
