@@ -62,12 +62,14 @@ python3 risk_dashboard.py ../risk-register/saarland-university-risk-register.xls
 
 - `evidence/kev_refresh.py`: downloads the CISA Known Exploited Vulnerabilities catalogue (standard library only) and writes `evidence/output/kev-summary.md` and `.json`: entries per year, share with known ransomware use, and counts per technology group tied to register risks. Run `python3 kev_refresh.py`.
 - `evidence/incidents.md`: aggregate figures and named incidents at German universities (HIS-HE 2025, DFN 2025, KonBriefing), each with its source.
-- `evidence/likelihood-review.md`: the 18 register likelihoods against that data. Result: 7 are supported by public data, 1 indirectly, and 10 have no public evidence, so most likelihoods are still judgement. The register itself is unchanged.
+- `evidence/likelihood-review.md`: the 18 register likelihoods against that data. Result: 8 are supported by public data, 1 indirectly, and 9 have no public evidence, so about half of the likelihoods are still judgement. The register itself is unchanged.
 - `evidence/sources.md`: sources with retrieval dates, and the data sources that could not be reached.
 
 ## IT-Grundschutz mapping
 
-`grundschutz/mapping.md` maps each risk to BSI IT-Grundschutz modules and sets out which German rules apply: IT-SiG SL for Saarland (whether the university is a covered body is still open), the Länder rules for Hochschulen, and NIS2, where Hochschulen are not clearly in scope.
+`grundschutz/mapping.md` maps each risk to BSI IT-Grundschutz modules and sets out which German rules apply: IT-SiG SL for Saarland (my reading is that the university is covered, but the law does not say so expressly), the Länder rules for Hochschulen, and NIS2, where Hochschulen are not clearly in scope.
+
+`grundschutz/control_status.py` reads the register and the SoA and writes `grundschutz/control-status.md`: for each risk, the Annex A controls that treat it and their SoA status (`pip install openpyxl`).
 
 ## How to use it
 
