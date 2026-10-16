@@ -7,7 +7,10 @@ Retrieved 2026-10-16 unless noted.
 - DFN, 83. DFN-Betriebstagung, Forum Wissenschaftsnetz: Cybersicherheit an Hochschulen 2025: https://www.dfn.de/wp-content/uploads/2025/10/Forum-Wissenschaftsnetz-Cybersicherheit-an-Hochschulen-2025.pdf (slides, no page numbers).
 - KonBriefing, Cyberattacks on universities: https://konbriefing.com/en-topics/cyber-attacks-universities.html (only the entries for 2022 were returned).
 - heise, "Hochschule Hannover: Ransomware-Angriff, große Teile der IT-Infrastruktur down": https://www.heise.de/news/Hochschule-Hannover-Ransomware-Angriff-grosse-Teile-der-IT-Infrastruktur-down-9350254.html (headline from a search result; article not read).
-- Informationssicherheitsgesetz Saarland (IT-SiG SL), 15 May 2019: https://www.umwelt-online.de/recht/allgemei/laender/srl/isichg.htm (excerpt only, demo view).
+- Forschung & Lehre, Cyberangriff auf Hochschule Ruhr West (1 Feb 2023): https://www.forschung-und-lehre.de/management/cyberangriff-auf-hochschule-ruhr-west-5369
+- Hochschule Mainz, Cyberangriff auf Hochschule Mainz (24 Nov 2025): https://www.hs-mainz.de/news/cyberangriff-auf-hochschule-mainz/
+- Forschung & Lehre, Cyberangriff: Vermutlich LMU-Studierendendaten abgeschöpft (21 Sep 2026): https://www.forschung-und-lehre.de/management/vermutlich-lmu-studierendendaten-abgeschoepft-7912
+- Informationssicherheitsgesetz Saarland (IT-SiG SL), 15 May 2019: https://www.umwelt-online.de/recht/allgemei/laender/srl/isichg.htm (§§ 1 to 3 complete; § 4 heading only). §§ 4 to 8 read via https://cybersecurity-navigator.de/rechtsvorschrift/2030 (excerpt). The official text at sl.juris.de could not be fetched (robots restriction).
 - BSI IT-Grundschutz Kompendium module listing: https://opensecurityarchitecture.org/frameworks/bsi-grundschutz (English titles; 30 of 111 modules shown).
 
 Not reachable from the build environment, so not used: FIRST EPSS, NVD API, bsi.bund.de (Lagebericht, Kompendium PDF), enisa.europa.eu.
