@@ -1,4 +1,4 @@
-# ISMS & BCM Portfolio:
+# GRC Portfolio: ISMS & BCM
 
 A portfolio project in governance, risk and compliance (GRC). It builds the core documents of an information security management system (ISO/IEC 27001:2022) and business continuity management, using Saarland University as the example organisation.
 
@@ -15,7 +15,7 @@ I picked my own university because it is an organisation I know from the inside 
 | Business Impact Analysis, one-page continuity plan and tabletop exercise for exam registration and grade recording | Done | `bcm/` |
 | Risk heatmap and KPI dashboard (Python, reads the register; static HTML page plus PNG charts) | Done | `dashboard/` |
 | Evidence for likelihood scores: CISA KEV refresh script, reported incidents at German universities, review of the 18 likelihoods | Done | `evidence/` |
-| Mapping of the 18 risks to BSI IT-Grundschutz, with Saarland IT-SiG SL and NIS2 notes (replaces the TISAX idea, which suits automotive suppliers, not a university) | Done | `grundschutz/` |
+| Mapping of the 18 risks to BSI IT-Grundschutz, with Saarland IT-SiG SL and NIS2 notes (replaces the TISAX idea, which suits automotive suppliers, not a university), plus a control-status report per risk | Done | `grundschutz/` |
 
 ## Risk register
 
@@ -72,5 +72,15 @@ python3 risk_dashboard.py ../risk-register/saarland-university-risk-register.xls
 `grundschutz/control_status.py` reads the register and the SoA and writes `grundschutz/control-status.md`: for each risk, the Annex A controls that treat it and their SoA status (`pip install openpyxl`).
 
 ## How to use it
+
+Get a copy of the repository:
+
+```
+git clone https://github.com/RoshFps/GRC_Portfolio.git
+cd GRC_Portfolio
+pip install openpyxl matplotlib
+```
+
+Python 3 is needed for the scripts; `openpyxl` covers the build scripts and `control_status.py`, `matplotlib` the dashboard, and `kev_refresh.py` uses the standard library only.
 
 Open the Excel files directly; every workbook starts with a Read Me sheet. Yellow cells are inputs and can be changed, the rest recalculates. To regenerate any workbook, install `openpyxl` and run the build script in its folder.
