@@ -1,0 +1,65 @@
+Cyber incidents at German universities (public reports)
+
+Collected on 16 October 2026 for the likelihood review. I only list what the
+source actually says. Most sources give a date but not the attack type or how
+long it lasted, so those are left out rather than guessed.
+
+
+Overall figures
+
+- 45 publicly known attacks on German Hochschulen (KonBriefing count, March
+  2025). Source: HIS-HE Forum 3/2025, p. 4.
+- 42 attacks on Hochschulen and research institutions reported to the BKA,
+  2022 to 2024. Source: HIS-HE p. 4 and DFN Betriebstagung 2025 slides.
+- About 20 reported incidents at Hochschulen per year. Source: DFN slides.
+- 97.3% of university leaders rate the cyber threat as large or rather large
+  (survey, summer 2024). Source: HIS-HE p. 1, citing Stifterverband.
+- 53.4% of Hochschulen have emergency plans, at least for some areas.
+  Source: HIS-HE p. 1.
+- There is no central register of attacks and no general duty to report.
+  Source: HIS-HE p. 5.
+- Saarland: no publicly known incident in the KonBriefing list (March 2025).
+  Source: HIS-HE pp. 5, 21, 29.
+
+
+Named incidents
+
+2019  Justus-Liebig-Universität Gießen. Named as attacked. (HIS-HE p. 27)
+2020  Universität Augsburg. Named as attacked. (HIS-HE p. 17)
+2021  TU Berlin. Named as attacked. (HIS-HE p. 19)
+2022  FH Münster, January. DDoS attacks, again on 27 Jan. (KonBriefing)
+2022  TH Aschaffenburg, 26 March. Cyber attack. (KonBriefing, HIS-HE p. 17)
+2022  Universitätsbibliothek Leipzig, 19 April. Unauthorised access, about
+      70,000 records with personal data. (KonBriefing)
+2022  PH Freiburg, Hochschule Heilbronn, Hochschule Ansbach, HTW Berlin.
+      Named as attacked. (HIS-HE pp. 14, 17, 19)
+2022  HAW Hamburg, end of year. Named as attacked. (HIS-HE p. 25)
+2023  Hochschule Karlsruhe, Hochschule Furtwangen, Universität Bremen,
+      Hochschule Hannover. Named as attacked. (HIS-HE pp. 14, 23, 30)
+2023  Hochschule Hannover. heise headline: "Ransomware-Angriff, große Teile der
+      IT-Infrastruktur down". (headline only, article not read)
+2023  Hochschule Ruhr West, 31 January. External attack, all IT disconnected,
+      most services down, electronic exams cancelled until the Saturday.
+      Attack type unclear at the time. (Forschung & Lehre, 1 Feb 2023)
+2024  Berliner Hochschule für Technik. Named as attacked. (HIS-HE p. 19)
+2024  Frankfurt University of Applied Sciences. Named as attacked.
+      (HIS-HE p. 27)
+2025  Hochschule Mainz, 24 November. Cyber attack, IT shut down, email
+      limited, teaching continued. (hs-mainz.de news)
+2026  LMU München, intrusion 16 September. Enrolment server broken into,
+      enrolment stopped and deadlines extended. Student master data (names,
+      addresses, birth dates, bank details) probably copied. Over 52,000
+      students enrolled, number affected unknown. (Forschung & Lehre,
+      21 Sep 2026)
+
+Not used because I couldn't read them: Universität Duisburg-Essen and HAW
+Hamburg (Vice Society, only a search headline), and the heise article on
+Hochschule Hannover (blocked).
+
+
+Caveats
+
+- This shows the sector, not Saarland University. No public incident is
+  listed for Saarland, but that means none was reported, not that none
+  happened.
+- Most entries have no attack type, so they can't be split by risk.

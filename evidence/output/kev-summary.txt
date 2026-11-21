@@ -1,0 +1,24 @@
+CISA KEV summary
+
+Downloaded 2026-10-16 from https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json
+Catalogue version 2026.10.16
+
+Entries: 1748
+Used by ransomware: 361 (21%)
+
+Added per year (all / ransomware):
+  2021  311 / 84
+  2022  555 / 132
+  2023  187 / 43
+  2024  186 / 44
+  2025  245 / 31
+  2026  264 / 27
+
+Vendor groups (entries / added in the last 12 months / ransomware):
+  Edge and VPN (R01, R06, R16): 265 / 59 / 67
+  Microsoft (R01, R02, R08): 390 / 44 / 117
+  Virtualisation and file transfer (R01, R12): 39 / 1 / 17
+  Web, mail and collaboration (R06, R14): 107 / 20 / 26
+  IoT and network devices (R16): 63 / 5 / 16
+
+Top 10 vendors: Microsoft 390, Cisco 101, Apple 95, Adobe 82, Google 75, Oracle 46, Apache 41, Ivanti 36, Fortinet 32, Linux 31

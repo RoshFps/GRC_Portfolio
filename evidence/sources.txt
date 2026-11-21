@@ -1,0 +1,33 @@
+Sources for the evidence files
+
+Retrieved on 16 October 2026 unless noted.
+
+- CISA Known Exploited Vulnerabilities catalogue, version 2026.10.16, 1,748
+  entries. Downloaded from the GitHub mirror:
+  https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json
+  (kev_refresh.py tries the cisa.gov feed first, but it was blocked.)
+
+- Stein, Lübcke, Gilch: Cybersicherheit an Hochschulen im Ländervergleich,
+  HIS-HE Forum 3/2025
+  https://his-he.de/wp-content/uploads/2025/11/HIS-HE_Forum_03_2025_Cybersicherheit_an_Hochschulen_im_Laendervergleich.pdf
+  (read from a text extract that stopped at p. 30)
+
+- DFN, Cybersicherheit an Hochschulen 2025 (Betriebstagung slides)
+  https://www.dfn.de/wp-content/uploads/2025/10/Forum-Wissenschaftsnetz-Cybersicherheit-an-Hochschulen-2025.pdf
+
+- KonBriefing, Cyberattacks on universities (only 2022 entries came back)
+  https://konbriefing.com/en-topics/cyber-attacks-universities.html
+
+- heise, Hochschule Hannover: Ransomware-Angriff (headline only)
+  https://www.heise.de/news/Hochschule-Hannover-Ransomware-Angriff-grosse-Teile-der-IT-Infrastruktur-down-9350254.html
+
+- Forschung & Lehre, Cyberangriff auf Hochschule Ruhr West (1 Feb 2023)
+  https://www.forschung-und-lehre.de/management/cyberangriff-auf-hochschule-ruhr-west-5369
+
+- Hochschule Mainz, Cyberangriff auf Hochschule Mainz (24 Nov 2025)
+  https://www.hs-mainz.de/news/cyberangriff-auf-hochschule-mainz/
+
+- Forschung & Lehre, Vermutlich LMU-Studierendendaten abgeschöpft (21 Sep 2026)
+  https://www.forschung-und-lehre.de/management/vermutlich-lmu-studierendendaten-abgeschoepft-7912
+
+Couldn't be reached, so not used: FIRST EPSS, NVD API, bsi.bund.de, enisa.europa.eu.

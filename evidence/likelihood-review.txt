@@ -1,0 +1,78 @@
+Likelihood review of the risk register
+
+Done on 16 October 2026. For each risk I compared the likelihood in the
+register (1 to 5) with what public data shows. The register itself is not
+changed, so the scores and the dashboard still match. Data: incidents.txt and
+output/kev-summary.txt.
+
+Limits: the KEV catalogue is global and the incident counts cover the whole
+sector, not Saarland. EPSS, NVD and the BSI and ENISA reports couldn't be
+downloaded, so they aren't used. Where there is no data I say so.
+
+
+R01 Ransomware on central IT (L = 4)
+  361 of 1,748 KEV entries (21%) are linked to ransomware: 67 in edge and VPN
+  products, 117 in Microsoft, 17 in virtualisation and file transfer.
+  Hochschule Hannover, Ruhr West and Mainz all took IT offline after attacks.
+  42 attacks reported to the BKA in 2022 to 2024.
+  View: keep 4. No public incident at Saarland, so not 5.
+
+R02 Credential phishing (L = 5)
+  No university rate found. 390 Microsoft entries in KEV, 44 in the last year.
+  View: keep, but indirect. 4 would also be fine.
+
+R03 Leak of research data (L = 3)
+  Universitätsbibliothek Leipzig, about 70,000 personal records (2022).
+  View: keep 3.
+
+R04 Lost or stolen laptops (L = 4)          No public data.
+R05 Supplier or uplink outage (L = 2)       No public data.
+
+R06 Unpatched institute servers (L = 4)
+  265 edge and 107 web/mail entries in KEV, 59 and 20 added in the last year.
+  View: keep 4.
+
+R07 Campus management outage at peak (L = 2)
+  LMU (2026): enrolment server broken into, enrolment stopped, deadlines
+  extended. Ruhr West cancelled electronic exams (2023).
+  View: the scenario is real. 2 is fine for Saarland, 3 would be too.
+
+R08 Privileged account misuse (L = 2)       No public data.
+R09 Accounts not removed (L = 4)            No public data.
+
+R10 Misconfigured file sharing (L = 3)
+  Only the Leipzig and LMU cases, neither stated to be a sharing mistake.
+  View: keep 3.
+
+R11 Espionage on research (L = 3)
+  Nothing university specific read. Needs the BSI or Verfassungsschutz report.
+
+R12 Data centre fire, water, power (L = 2)  No public data.
+
+R13 DDoS (L = 3)
+  FH Münster hit twice in January 2022.
+  View: keep 3.
+
+R14 Insecure in-house software (L = 3)
+  KEV only covers third-party products. No direct data.
+
+R15 Attacks detected too late (L = 4)       No public data.
+
+R16 Insecure lab and building devices (L = 3)
+  63 KEV entries in D-Link, TP-Link, NETGEAR, QNAP, MikroTik and Mitel
+  products, 16 used by ransomware.
+  View: keep 3.
+
+R17 Loss of key IT staff (L = 3)
+  HIS-HE: 3 of 8 science ministries offer no help with IT staffing.
+  View: keep 3.
+
+R18 Confidential data in public AI tools (L = 4)  No public data.
+
+
+Result
+
+8 of 18 likelihoods are backed, or at least not contradicted, by public data
+(R01, R03, R06, R07, R10, R13, R16, R17). R02 is indirect. 9 have no public
+data at all. So about half the register still rests on judgement. The next step
+would be to use the university's own incident and scan data.
