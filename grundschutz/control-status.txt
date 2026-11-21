@@ -1,0 +1,88 @@
+Controls behind each risk and their SoA status
+
+Made by control_status.py from the risk register and the SoA. Weak means the
+control is only Planned or Not implemented.
+
+R01 Ransomware on central IT infrastructure (L4 x I5), weak 1 of 3
+    A.8.7    Partially implemented
+    A.8.13   Partially implemented
+    A.5.29   Planned
+
+R02 Phishing and theft of staff or student credentials (L5 x I3), weak 0 of 3
+    A.6.3    Partially implemented
+    A.8.5    Partially implemented
+    A.5.17   Implemented
+
+R03 Leak of sensitive research data (L3 x I5), weak 2 of 3
+    A.5.12   Planned
+    A.5.34   Partially implemented
+    A.8.11   Planned
+
+R04 Loss or theft of laptops and mobile devices (L4 x I3), weak 0 of 3
+    A.8.1    Partially implemented
+    A.7.9    Partially implemented
+    A.8.24   Partially implemented
+
+R05 Outage of a critical IT or network supplier (L2 x I4), weak 3 of 3
+    A.5.19   Planned
+    A.5.21   Not implemented
+    A.5.30   Planned
+
+R06 Unpatched servers run by institutes (shadow IT) (L4 x I4), weak 0 of 2
+    A.5.9    Partially implemented
+    A.8.8    Partially implemented
+
+R07 Campus management system failure during enrolment or exam registration (L2 x I4), weak 1 of 3
+    A.8.14   Partially implemented
+    A.5.30   Planned
+    A.8.6    Partially implemented
+
+R08 Misuse of privileged administrator accounts (L2 x I5), weak 0 of 3
+    A.8.2    Partially implemented
+    A.8.15   Partially implemented
+    A.5.18   Partially implemented
+
+R09 Accounts not removed after people leave (L4 x I3), weak 0 of 2
+    A.5.16   Partially implemented
+    A.5.18   Partially implemented
+
+R10 Personal data exposed through misconfigured file sharing (L3 x I4), weak 0 of 3
+    A.5.14   Partially implemented
+    A.5.15   Partially implemented
+    A.5.34   Partially implemented
+
+R11 Espionage targeting research and knowledge transfer (L3 x I4), weak 2 of 3
+    A.5.7    Not implemented
+    A.5.12   Planned
+    A.8.16   Partially implemented
+
+R12 Fire, water or power failure in the data centre (L2 x I5), weak 0 of 3
+    A.7.5    Partially implemented
+    A.7.11   Implemented
+    A.8.13   Partially implemented
+
+R13 Denial-of-service attack on website and network (L3 x I3), weak 0 of 2
+    A.8.20   Implemented
+    A.8.6    Partially implemented
+
+R14 Insecure software developed in-house (L3 x I3), weak 3 of 3
+    A.8.25   Planned
+    A.8.28   Planned
+    A.8.29   Planned
+
+R15 Attacks detected too late (L4 x I4), weak 0 of 3
+    A.8.16   Partially implemented
+    A.5.24   Partially implemented
+    A.5.26   Partially implemented
+
+R16 Insecure lab equipment and building systems on the campus network (L3 x I4), weak 0 of 2
+    A.8.22   Partially implemented
+    A.8.20   Implemented
+
+R17 Loss of key IT staff and knowledge (L3 x I3), weak 0 of 2
+    A.5.37   Partially implemented
+    A.5.2    Partially implemented
+
+R18 Confidential data entered into public AI tools (L4 x I3), weak 0 of 2
+    A.5.10   Partially implemented
+    A.5.14   Partially implemented

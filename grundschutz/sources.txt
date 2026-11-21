@@ -1,0 +1,18 @@
+Sources for the Grundschutz mapping
+
+Retrieved on 16 October 2026.
+
+- Informationssicherheitsgesetz Saarland (IT-SiG SL), 15 May 2019
+  https://www.umwelt-online.de/recht/allgemei/laender/srl/isichg.htm
+  §§ 1 to 3 in full. §§ 4 to 8 read as an excerpt at
+  https://cybersecurity-navigator.de/rechtsvorschrift/2030
+  (the official text on sl.juris.de was blocked)
+
+- BSI IT-Grundschutz Kompendium module list (English titles, 30 of 111 modules)
+  https://opensecurityarchitecture.org/frameworks/bsi-grundschutz
+
+- HIS-HE Forum 3/2025, Cybersicherheit an Hochschulen im Ländervergleich
+  https://his-he.de/wp-content/uploads/2025/11/HIS-HE_Forum_03_2025_Cybersicherheit_an_Hochschulen_im_Laendervergleich.pdf
+  Hamburg and Bavaria rules, NIS2 scope.
+
+Couldn't be reached: bsi.bund.de (Kompendium PDF).

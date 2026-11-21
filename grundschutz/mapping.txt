@@ -1,0 +1,127 @@
+Risk register mapped to BSI IT-Grundschutz and German rules
+
+This replaces the TISAX mapping from my first plan. TISAX is for car industry
+suppliers and doesn't fit a public university. What does apply:
+
+- BSI IT-Grundschutz (BSI-Standard 200-2 and the Kompendium). HIS-HE 3/2025
+  says Hamburg makes its Hochschulen follow it (p. 25) and Bavaria makes them
+  run an ISMS (p. 17).
+
+- Saarland Informationssicherheitsgesetz (IT-SiG SL), 15 May 2019. § 3 asks
+  for appropriate technical and organisational measures and security
+  concepts, and § 3 (2) says incidents must be reported to the Land's central
+  IT provider. Nothing in §§ 1 to 8 mentions Hochschulen, an ISMS or
+  Grundschutz. § 1 covers authorities and other public-law bodies under state
+  supervision, so I think the university is covered, but the law doesn't say
+  so directly. This needs checking with the university's legal office.
+
+- NIS2 (Directive (EU) 2022/2555). Per HIS-HE (pp. 6 to 8) educational
+  institutions are excluded from the research definition, and in November
+  2023 the IT-Planungsrat asked not to extend the scope to them. So it's an
+  open question whether a Hochschule is in scope. I didn't check later changes
+  to German law.
+
+
+About the table
+
+Module names are from the Grundschutz Kompendium (2023). Most IDs were checked
+against a public list on opensecurityarchitecture.org. These are from memory
+and still need checking against the official PDF: SYS.3.1, SYS.3.2.x,
+SYS.4.4, SYS.1.5, OPS.2.2, OPS.2.3, CON.8, NET.3.2, NET.3.3, APP.5.3, DER.3.1.
+Which modules fit which risk is my own judgement, not an official mapping.
+
+
+R01 Ransomware on central IT
+  OPS.1.1.4 Schutz vor Schadprogrammen, CON.3 Datensicherungskonzept,
+  DER.2.1 Behandlung von Sicherheitsvorfällen, DER.4 Notfallmanagement,
+  OPS.1.1.3 Patch- und Änderungsmanagement
+  Malware protection, offline backups, incident handling, restart planning.
+
+R02 Credential phishing
+  ORP.3 Sensibilisierung und Schulung, ORP.4 Identitäts- und
+  Berechtigungsmanagement, APP.5.3 E-Mail-Client und -Server
+  Awareness, strong login, mail filtering.
+
+R03 Leak of research data
+  CON.2 Datenschutz, CON.1 Kryptokonzept, ORP.4, CON.6 Löschen und Vernichten
+  Classification, encryption, access, deletion.
+
+R04 Lost or stolen laptops
+  SYS.3.1 Laptops, SYS.2.1 Allgemeiner Client, CON.1, CON.7
+  Informationssicherheit auf Auslandsreisen
+  Hardening, disk encryption, travel rules.
+
+R05 Supplier or uplink outage
+  OPS.2.3 Nutzung von Outsourcing, OPS.2.2 Cloud-Nutzung, NET.1.1
+  Netzarchitektur und -design, DER.4
+  Supplier contracts, network redundancy, continuity plans.
+
+R06 Unpatched institute servers
+  OPS.1.1.3, SYS.1.1 Allgemeiner Server, ISMS.1 Sicherheitsmanagement,
+  OPS.1.1.2 Ordnungsgemäße IT-Administration
+  Asset inventory and patching for servers outside central IT.
+
+R07 Campus management outage
+  DER.4, SYS.1.1, SYS.1.5 Virtualisierung, INF.2 Rechenzentrum
+  Redundancy and recovery of exam registration (see bcm/).
+
+R08 Privileged account misuse
+  OPS.1.1.2, ORP.4, OPS.1.1.5 Protokollierung
+  Separate admin accounts, least privilege, logging.
+
+R09 Accounts not removed
+  ORP.4, ORP.2 Personal
+  Joiner-mover-leaver process tied to HR and student records.
+
+R10 Misconfigured file sharing
+  CON.2, OPS.2.2, ORP.4
+  Sharing rules for cloud and file shares.
+
+R11 Espionage on research
+  ISMS.1, DER.1 Detektion, NET.1.1
+  Separate lab networks, detection.
+
+R12 Data centre fire, water, power
+  INF.2, INF.1 Allgemeines Gebäude, CON.3
+  Physical protection and off-site backups.
+
+R13 DDoS
+  NET.1.1, NET.3.2 Firewall, DER.2.1
+  Capacity, filtering at the uplink, incident process.
+
+R14 Insecure in-house software
+  CON.8 Software-Entwicklung, APP.3.1 Webanwendungen, OPS.1.1.6
+  Software-Tests und -Freigaben
+  Secure coding rules and testing.
+
+R15 Attacks detected too late
+  DER.1, OPS.1.1.5, DER.2.1
+  Central logs, detection, incident process.
+
+R16 Insecure lab and building devices
+  SYS.4.4 Allgemeines IoT-Gerät, NET.1.1, OPS.1.1.3
+  Network separation and patching.
+
+R17 Loss of key IT staff
+  ORP.1 Organisation, OPS.1.1.2, ORP.2
+  Documentation, deputies, onboarding.
+
+R18 Data in public AI tools
+  ORP.1, CON.2, ORP.3
+  Usage rules, data protection review, awareness.
+
+
+Coverage
+
+Every risk maps to at least two modules. Most used: ORP.4 (5 risks), NET.1.1
+(4), then DER.2.1, DER.4, OPS.1.1.3, CON.2 and OPS.1.1.2 (3 each).
+
+
+Next steps
+
+1. Get the coverage question confirmed and work out what the reporting duty
+   means for the incident steps in bcm/continuity-plan.txt.
+2. Check the module names against the official Kompendium.
+3. A real Basis-Absicherung check needs the module requirement texts, which I
+   couldn't download. control-status.txt is a first step: it shows the SoA
+   status of the controls behind each risk.
