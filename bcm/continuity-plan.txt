@@ -1,0 +1,90 @@
+Continuity plan: exam registration and grade recording
+Saarland University. Process owner: Head of Student Services. Version 0.1, October 2026.
+
+Public facts are in sources.txt. Roles, numbers and procedures are made up.
+
+
+1. Scope and targets
+
+Covers exam registration, withdrawal, attendance lists and grade entry in LSF
+(HIS-Portal) on both campuses. Targets come from the BIA
+(saarland-university-bia.xlsx).
+
+                     Peak (registration window, grading deadline)   Off-peak
+  MTPD               2 days                                         4 weeks
+  RTO                24 hours                                       1 week
+  RPO                1 hour                                         24 hours
+
+
+2. When to start the plan
+
+- Peak period: students can't register, or examiners can't enter grades, for
+  more than 2 hours.
+- Any time: data in the exam database may be lost or tampered with.
+- Off-peak: the outage is expected to last more than 2 working days.
+
+The HIZ service desk or any exam office calls the Head of Student Services, who
+starts the plan. If it looks like a cyber attack (risk R01), the CISO runs
+incident response at the same time and decides on isolation first.
+
+
+3. Who does what
+
+- Head of Student Services (plan lead): starts the plan, runs the crisis call,
+  decides on the paper fallback.
+- Head of HIZ: restores LSF and the database, gives a recovery estimate every
+  2 hours.
+- CISO: leads incident response if there is an attack, decides when systems
+  are clean.
+- Vice President for Teaching: asks the exam boards to extend deadlines and
+  signs the announcement.
+- Exam office leads: run the paper fallback and keep a list of every manual
+  registration.
+- Press and Communications: website banner, student email, social media.
+- Data Protection Officer: decides whether a breach has to be reported
+  (GDPR Art. 33, 72 hours).
+
+
+4. Steps
+
+First hour
+1. Plan lead opens a crisis call with HIZ, the CISO and the exam office leads.
+2. HIZ confirms the cause and gives a first estimate. If an attack is
+   suspected, nothing is restored until the CISO agrees.
+3. Banner and email to students: "Exam registration is down. Your deadline is
+   protected. Do not register twice."
+
+Within 4 hours
+4. If the estimate is longer than the RTO, switch to paper: exam offices take
+   written registrations (paper form or signed scan by email) with a
+   timestamp. The exam pages already allow this when online registration
+   fails.
+5. The Vice President for Teaching asks all exam board chairs to extend
+   deadlines by the length of the outage plus 2 days.
+6. Exam offices export the latest attendance lists they have, or rebuild them
+   from the last backup.
+
+Until it is fixed
+7. HIZ restores LSF from the latest clean backup or moves to the standby site,
+   with an update every 2 hours.
+8. Plan lead checks the backlog every day against the MTPD.
+
+
+5. Back to normal
+
+- Before reopening, exam offices check a sample of registrations and grades
+  against their own records, to spot data lost since the last backup or
+  changed by an attacker.
+- Paper registrations are entered with their original timestamp and each
+  student gets a confirmation email.
+- Announce that the outage is over and give the final deadlines.
+- Within 2 weeks: lessons learned meeting, then update this plan, the BIA and
+  risk R07.
+
+
+6. Keeping the plan ready
+
+Paper forms and the import template are kept in each exam office (BIA action
+A5). The plan is tested once a year with tabletop-exercise.txt, before the
+winter registration window. Contact details are kept in a separate offline
+list.

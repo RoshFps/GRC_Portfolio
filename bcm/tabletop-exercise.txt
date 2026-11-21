@@ -1,0 +1,105 @@
+Tabletop exercise: "Deadline Day"
+Saarland University. Tests the continuity plan for exam registration. Planned for December 2026.
+
+The scenario, times and numbers are made up.
+
+
+Purpose
+
+Check that the people in continuity-plan.txt can keep exam registration going
+when LSF fails on the last two days of the winter registration window, and
+whether the BIA targets (RTO 24 hours, RPO 1 hour at peak) are realistic with
+today's backups.
+
+
+Objectives
+
+1. Start the plan in time and hold the first crisis call.
+2. Decide on the paper fallback and deadline extensions within 4 hours.
+3. Handle a suspected attack without restoring an infected system.
+4. Agree what to tell students, and when.
+5. Work out how much registration data would really be lost.
+
+
+Setup
+
+- 2 hours, discussion only, no systems touched.
+- People: Head of Student Services (plan lead), Head of HIZ, CISO, Vice
+  President for Teaching or deputy, two exam office leads, Press and
+  Communications, Data Protection Officer.
+- Run by the information security team, with one note taker.
+- Rules: answer as you would on the day. No blame.
+
+
+Scenario
+
+The winter registration window closes on Friday 22 January 2027 at 23:59
+(assumed date). About 40% of registrations usually come in the last three days.
+
+Thu 21 Jan, 07:45
+  The service desk gets calls: the HIS-Portal shows an error page. Two exam
+  offices report the same. The LSF database server is not responding.
+  Ask: Who is told first? Does this meet the trigger? Who opens the crisis
+  call and who joins?
+
+08:30
+  HIZ finds the database files renamed with an unknown extension and a ransom
+  note. Two file servers show the same.
+  Ask: Who leads now, the plan lead or the CISO? What gets isolated? Is last
+  night's backup safe to restore?
+
+09:30
+  The 02:00 backup is on the same storage system and its state is unknown.
+  Restore takes 3 days if the backup is clean.
+  Ask: Compare with RTO 24 hours and MTPD 2 days. Switch to paper now? What
+  data is lost since 02:00?
+
+11:00
+  Students post screenshots online, the student council wants a statement and
+  a regional newspaper calls.
+  Ask: What do you tell students and the press? Who signs off the text? Is the
+  extension announced now or later?
+
+14:00
+  Exam offices have queues and 400 paper forms already. One faculty has no
+  paper form. Some students who registered on Wednesday evening say their
+  registrations are gone.
+  Ask: How are paper registrations recorded and entered later? How do you
+  prove which online registrations existed?
+
+Fri 22 Jan, 10:00
+  Thursday's backup was encrypted too. Wednesday's is clean and the restore
+  will finish Sunday evening. Logs suggest the attacker was inside for 10 days.
+  Ask: Is personal data exposed? Does the DPO report within 72 hours? What is
+  the new deadline? How do you check data before reopening?
+
+
+What a good response looks like
+
+- Plan started before 09:45 (2 hours after the first call).
+- Nothing restored until the CISO confirms the backup is clean and the way in
+  is closed.
+- Paper fallback and one extension rule (outage plus 2 days) agreed by 11:45.
+- One message to students, from one source, on website, email and social media.
+- DPO involved by Friday 10:00 at the latest, with the Art. 33 decision written
+  down.
+- The group notices that nightly backups on the same storage can lose up to
+  30 hours of registrations (Wednesday 02:00 to Thursday 07:45), far more than
+  the 1 hour RPO.
+
+
+Scoring
+
+The note taker writes down, for each step: the decision, the time, who decided
+and any gap in the plan. Each objective is scored:
+
+  Met          done in time and as the plan says
+  Partly met   done, but late or outside the plan
+  Not met      not done, or the plan doesn't cover it
+
+
+Afterwards
+
+Within 2 weeks the facilitator writes a short report with findings and actions,
+each with an owner and a due date. The findings go into continuity-plan.txt,
+the BIA and the risk register (mainly R07, R01, R12 and R15).
