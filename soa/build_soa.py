@@ -1,24 +1,26 @@
-"""Build the Statement of Applicability workbook for the Saarland University ISMS exercise.
+# Builds the Statement of Applicability workbook and its sources list.
+#
+# Usage: python3 build_soa.py
+#
+# It reads column L of the risk register to see which risks each control treats,
+# so run it again after changing the register.
 
-Usage: python3 build_soa.py ../risk-register/saarland-university-risk-register.xlsx out.xlsx [sources.md]
-
-The risk register is read to fill in which risks each Annex A control treats
-(column L of the Risk Register sheet), so the two documents stay in step.
-"""
 import datetime as dt
 import re
-import sys
+from pathlib import Path
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.formatting.rule import CellIsRule
 from openpyxl.utils import get_column_letter
 
-REGISTER, OUT = sys.argv[1], sys.argv[2]
+HERE = Path(__file__).parent
+REGISTER = HERE.parent / "risk-register" / "saarland-university-risk-register.xlsx"
+OUT = HERE / "saarland-university-soa.xlsx"
 
 FONT = "Arial"
 f = lambda **k: Font(name=FONT, **k)
-HEAD_FILL = PatternFill("solid", fgColor="1F3864")
+HEAD_FILL = PatternFill("solid", fgColor="000000")
 CALC_FILL = PatternFill("solid", fgColor="595959")
 INPUT_FILL = PatternFill("solid", fgColor="FFF2CC")
 thin = Side(style="thin", color="BFBFBF")
@@ -30,7 +32,7 @@ THEMES = {"5": "Organisational", "6": "People", "7": "Physical", "8": "Technolog
 STATUSES = ["Implemented", "Partially implemented", "Planned", "Not implemented", "Not applicable"]
 REASONS = {"R": "Risk treatment", "L": "Legal / regulatory", "C": "Contractual", "B": "Baseline good practice"}
 
-# Control owner roles (invented, matching the register's roles)
+# Owner roles, same as in the register
 CISO = "Chief Information Security Officer (CISO)"
 HIZ = "Head of University IT Centre (HIZ)"
 HR = "Director of Human Resources"
@@ -41,10 +43,9 @@ BOARD = "University Executive Board"
 LEGAL = "Head of Legal Affairs"
 PROC = "Head of Procurement"
 
-# (control, short paraphrased title, applicable, other reasons, status, owner,
-#  justification, evidence / reference document)
-# Titles are short paraphrases, not the ISO wording. Risk links (reason R) are
-# added automatically from the register.
+# control, short title in my own words, applicable, reasons, status, owner,
+# justification, evidence document.
+# The R (risk) reason is added from the register, so it is not listed here.
 CONTROLS = [
  ("A.5.1", "Security policy set and reviewed", True, "L,B", "Implemented", BOARD,
   "Top-level policy is the basis of the ISMS; required to show management direction.", "Information Security Policy"),
@@ -239,7 +240,7 @@ CONTROLS = [
 assert len(CONTROLS) == 93, len(CONTROLS)
 assert len({c[0] for c in CONTROLS}) == 93
 
-# ---------------- risks per control, from the register ----------------
+# ---------------- which risks each control treats ----------------
 reg = load_workbook(REGISTER)["Risk Register"]
 RISKS_FOR = {}
 for row in reg.iter_rows(min_row=5, values_only=True):
@@ -259,31 +260,30 @@ rm.title = "Read Me"
 rm.column_dimensions["A"].width = 110
 linked = sum(1 for c in CONTROLS if c[0] in RISKS_FOR)
 lines = [
- ("Statement of Applicability: Saarland University", f(bold=True, size=14, color="1F3864")),
- ("PORTFOLIO EXERCISE. Not an official document of Saarland University.", f(bold=True, color="C00000")),
+ ("Statement of Applicability: Saarland University", f(bold=True, size=14)),
  ("", None),
- ("Purpose", f(bold=True)),
- ("Statement of Applicability (SoA) as required by ISO/IEC 27001:2022 clause 6.1.3 d). It lists all 93 controls of Annex A, says whether each is applicable, why it is included or excluded, and how far it is implemented.", f()),
- ("Control titles are short paraphrases, not the wording of the standard. The full text is in ISO/IEC 27001:2022 and the guidance in ISO/IEC 27002:2022 (paid, not included).", f()),
- ("All statuses, owners, justifications and documents are invented for illustration and do not describe the university's real security posture.", f()),
+ ("What this is", f(bold=True)),
+ ("The SoA that ISO/IEC 27001:2022 clause 6.1.3 d) asks for. It lists all 93 Annex A controls, whether each one applies, why, and how far it is in place.", f()),
+ ("The control titles are short versions in my own words, not the text of the standard (ISO 27001 and 27002 are paid, so no copy is included).", f()),
+ ("Statuses, owners, justifications and documents are made up and say nothing about the university's real security.", f()),
  ("", None),
  ("Scope (assumed)", f(bold=True)),
- ("Information and IT services of the central university administration and of the University IT Centre (HIZ) at the Saarbrücken and Homburg campuses, including services offered to faculties and institutes. Systems run by institutes themselves are in scope where they connect to the campus network.", f()),
+ ("Central administration and the IT centre (HIZ) on both campuses, including the services they run for faculties. Institute systems count where they connect to the campus network.", f()),
  ("", None),
  ("Sheets", f(bold=True)),
- ("SoA: one row per Annex A control with applicability, reasons for inclusion, justification, implementation status, owner, evidence and the risks it treats.", f()),
- (f"Related risks are read from the risk register (column L of its Risk Register sheet) when the workbook is built: {linked} controls treat at least one of its risks.", f()),
- ("Summary: counts by theme and status, calculated with formulas.", f()),
- ("Lists: values for the drop-down menus.", f()),
- ("Sources: standards and other references used.", f()),
+ ("SoA: one row per control with applicability, reasons, justification, status, owner, evidence and related risks.", f()),
+ (f"Related risks come from column L of the risk register. {linked} controls treat at least one risk.", f()),
+ ("Summary: counts by theme and status (formulas).", f()),
+ ("Lists: values for the drop-downs.", f()),
+ ("Sources: standards and laws used.", f()),
  ("", None),
- ("Reasons for inclusion", f(bold=True)),
+ ("Reasons for including a control", f(bold=True)),
  *[(f"{k} = {v}", f()) for k, v in REASONS.items()],
  ("", None),
- ("How to edit", f(bold=True)),
- ("Light yellow cells are inputs. Applicable, Status and the reason flags use drop-downs. An excluded control must say why in the justification; its status should be Not applicable.", f()),
+ ("Editing", f(bold=True)),
+ ("Yellow cells are inputs. If a control is excluded, say why in the justification and set the status to Not applicable.", f()),
  ("", None),
- (f"Version 0.1, prepared {dt.date(2026,10,8):%d %B %Y}.", f(italic=True, color="595959")),
+ (f"Version 0.1, {dt.date(2026,10,8):%d %B %Y}", f(italic=True, color="595959")),
 ]
 for i, (text, font) in enumerate(lines, 1):
     c = rm.cell(row=i, column=1, value=text)
@@ -303,12 +303,12 @@ for col, (h, vals) in lists.items():
 # ---------------- SoA ----------------
 ws = wb.create_sheet("SoA", 1)
 ws["A1"] = "Statement of Applicability: ISO/IEC 27001:2022 Annex A"
-ws["A1"].font = f(bold=True, size=14, color="1F3864")
-ws["A2"] = "Portfolio exercise for Saarland University. Paraphrased control titles; all statuses and details are invented. Not an official university document."
-ws["A2"].font = f(italic=True, color="C00000")
+ws["A1"].font = f(bold=True, size=14, color="000000")
+ws["A2"] = "Saarland University. Control titles are in my own words; statuses, owners and documents are made up."
+ws["A2"].font = f(italic=True, color="595959")
 
 cols = [
- ("Control", 9, "in"), ("Control (paraphrased title)", 34, "in"), ("Theme", 15, "in"),
+ ("Control", 9, "in"), ("Control (short title)", 34, "in"), ("Theme", 15, "in"),
  ("Applicable", 11, "in"),
  ("R: Risk treatment", 9, "in"), ("L: Legal / regulatory", 10, "in"), ("C: Contractual", 10, "in"), ("B: Baseline", 9, "in"),
  ("Justification for inclusion or exclusion", 55, "in"), ("Implementation status", 15, "in"),
@@ -375,8 +375,8 @@ ws.conditional_formatting.add(f"D{first}:D{last}",
 
 # ---------------- Summary ----------------
 su = wb.create_sheet("Summary", 2)
-su["A1"] = "SoA Summary"; su["A1"].font = f(bold=True, size=14, color="1F3864")
-su["A2"] = f"Calculated from the SoA sheet (rows {first} to {last}). Portfolio exercise."; su["A2"].font = f(italic=True)
+su["A1"] = "SoA Summary"; su["A1"].font = f(bold=True, size=14, color="000000")
+su["A2"] = f"Calculated from the SoA sheet (rows {first} to {last})."; su["A2"].font = f(italic=True)
 S = "SoA!"
 rng = lambda c: f"{S}${c}${first}:${c}${last}"
 
@@ -446,7 +446,7 @@ SOURCES = [
   "Clause 6.1.3 d) requires a Statement of Applicability; Annex A lists the 93 controls in four themes",
   "Whole SoA; control numbers and themes", "Paid standard (about CHF 155), no copy included"),
  ("Standard", "ISO/IEC 27002:2022 Information security controls", "https://www.iso.org/standard/75652.html",
-  "Purpose and guidance for each control, used to write the paraphrased titles and justifications",
+  "Purpose and guidance for each control, used to write the short titles and justifications",
   "Columns B and I", "Paid standard, no copy included"),
  ("Law", "EU General Data Protection Regulation (GDPR), Regulation (EU) 2016/679",
   "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
@@ -460,8 +460,8 @@ SOURCES = [
   "Risks R01 to R18 and the Annex A controls that treat them", "Column M (related risks), reason R", "Included in this repository"),
 ]
 so = wb.create_sheet("Sources")
-so["A1"] = "Sources"; so["A1"].font = f(bold=True, size=14, color="1F3864")
-so["A2"] = "Checked 8 October 2026. Everything not listed here (statuses, owners, documents, scope) is invented for the exercise."
+so["A1"] = "Sources"; so["A1"].font = f(bold=True, size=14, color="000000")
+so["A2"] = "Checked 8 October 2026. Anything not listed here is made up."
 so["A2"].font = f(italic=True)
 shdr = ["Type", "Source", "Link", "What it supports", "Used in", "Access"]
 for j, h in enumerate(shdr, 1):
@@ -471,26 +471,18 @@ for i, src in enumerate(SOURCES, 5):
         c = so.cell(row=i, column=j, value=v); c.font = f(); c.alignment = WRAP; c.border = BORDER
         if j == 3 and v.startswith("http"):
             c.hyperlink = v
-            c.font = f(color="0563C1", underline="single")
+            c.font = f(underline="single")
 for col, w in zip("ABCDEF", (12, 40, 45, 55, 28, 24)):
     so.column_dimensions[col].width = w
 
-if len(sys.argv) > 3:
-    with open(sys.argv[3], "w") as md:
-        md.write("# Sources for the Saarland University Statement of Applicability\n\n")
-        md.write("Portfolio exercise, not an official university document. Sources checked on 8 October 2026. "
-                 "Control titles are paraphrased; all statuses, owners, documents and the scope are invented.\n\n")
-        for sec in dict.fromkeys(s[0] for s in SOURCES):
-            md.write(f"## {sec}\n\n")
-            for _, name, url, what, used, access in (s for s in SOURCES if s[0] == sec):
-                md.write(f"- [{name}]({url})  \n  Supports: {what}.  \n  Used in: {used}. Access: {access}.\n")
-            md.write("\n")
-        md.write("## Files in this folder\n\n"
-                 "- `saarland-university-soa.xlsx`: the SoA (sheets Read Me, SoA, Summary, Lists, Sources).\n"
-                 "- `build_soa.py`: Python script that generates the workbook and this file "
-                 "(`python3 build_soa.py ../risk-register/saarland-university-risk-register.xlsx out.xlsx sources.md`).\n"
-                 "- `sources.md`: this list.\n\n"
-                 "The ISO standards are paid and cannot be shared. The GDPR and the Basic Law are free to read at the links above.\n")
+with open(HERE / "sources.txt", "w") as out:
+    out.write("Sources for the Statement of Applicability\n\n")
+    out.write("Checked on 8 October 2026. Control titles are in my own words. "
+              "Statuses, owners, documents and the scope are made up.\n")
+    for sec in dict.fromkeys(s[0] for s in SOURCES):
+        out.write(f"\n{sec}\n")
+        for _, name, url, what, used, access in (s for s in SOURCES if s[0] == sec):
+            out.write(f"\n- {name}\n  {url}\n  {what}. Used in: {used}. {access}.\n")
 
 wb.save(OUT)
 print("saved", OUT, len(CONTROLS), "controls,", linked, "linked to risks")
