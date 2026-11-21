@@ -1,25 +1,32 @@
+# Builds the risk register workbook and its sources list.
+#
+# Usage: python3 build_register.py
+
 import datetime as dt
-import sys
+from pathlib import Path
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.formatting.rule import CellIsRule, FormulaRule
 from openpyxl.utils import get_column_letter
 
-OUT = sys.argv[1]
+HERE = Path(__file__).parent
+OUT = HERE / "saarland-university-risk-register.xlsx"
 D = dt.date
 
 FONT = "Arial"
 f = lambda **k: Font(name=FONT, **k)
-HEAD_FILL = PatternFill("solid", fgColor="1F3864")
+HEAD_FILL = PatternFill("solid", fgColor="000000")
 INPUT_FILL = PatternFill("solid", fgColor="FFF2CC")
 thin = Side(style="thin", color="BFBFBF")
 BORDER = Border(left=thin, right=thin, top=thin, bottom=thin)
 WRAP = Alignment(wrap_text=True, vertical="top")
 CENTER = Alignment(horizontal="center", vertical="top", wrap_text=True)
 
-# (id, title, description, asset, category, owner, L, I, existing controls,
-#  annex A controls, treatment, planned action, status, due, res L, res I)
+# One tuple per risk:
+# id, title, description, asset, category, owner, likelihood, impact,
+# existing controls, Annex A controls, treatment, planned fix, status, due date,
+# residual likelihood, residual impact
 RISKS = [
  ("R01", "Ransomware on central IT infrastructure",
   "Criminal group encrypts file servers, directory service and virtualisation hosts after initial access via phishing or an unpatched edge device. Comparable attacks hit several German universities between 2019 and 2023.",
@@ -138,28 +145,26 @@ rm = wb.active
 rm.title = "Read Me"
 rm.column_dimensions["A"].width = 110
 lines = [
- ("Information Security Risk Register: Saarland University", f(bold=True, size=14, color="1F3864")),
- ("PORTFOLIO EXERCISE. Not an official document of Saarland University.", f(bold=True, color="C00000")),
+ ("Information Security Risk Register: Saarland University", f(bold=True, size=14)),
  ("", None),
- ("Purpose", f(bold=True)),
- ("Sample risk register for an ISMS based on ISO/IEC 27001:2022, built around Saarland University (Universität des Saarlandes) as the example organisation.", f()),
- ("Public facts used: campuses in Saarbrücken and Homburg, the Faculty of Medicine in Homburg, and the University IT Centre (HIZ), shared with htw saar. A network uplink via the German research network (DFN) is assumed, not confirmed. Links are on the Sources sheet.", f()),
- ("Everything else (risks, scores, owners, existing controls, due dates, statuses) is invented for illustration and does not describe the university's real security posture.", f()),
+ ("What this is", f(bold=True)),
+ ("A risk register for an ISMS based on ISO/IEC 27001:2022, using Saarland University as the example.", f()),
+ ("The public facts are real: the Saarbrücken and Homburg campuses, the Faculty of Medicine in Homburg and the IT centre (HIZ) shared with htw saar. I assumed the network uplink runs via DFN; I could not confirm it. Links are on the Sources sheet.", f()),
+ ("Everything else (risks, scores, owners, controls in place, dates, statuses) is made up and says nothing about the university's real security.", f()),
  ("", None),
  ("Sheets", f(bold=True)),
- ("Risk Register: one row per risk with inherent and residual scoring, owner role, ISO 27001:2022 Annex A controls, treatment and remediation tracking.", f()),
- ("Summary: KPIs and a 5x5 heatmap, calculated from the register with formulas.", f()),
- ("Scoring Method: definitions for likelihood and impact (1 to 5), rating bands and risk appetite.", f()),
- ("Lists: values used by the drop-down menus.", f()),
- ("Sources: public pages and standards behind the facts, scales and control references.", f()),
+ ("Risk Register: one row per risk with scores before and after treatment, owner, Annex A controls and the planned fix.", f()),
+ ("Summary: KPIs and a 5x5 heatmap, all formulas.", f()),
+ ("Scoring Method: the 1 to 5 scales, rating bands and risk appetite.", f()),
+ ("Lists: values for the drop-downs.", f()),
+ ("Sources: where the public facts come from.", f()),
  ("", None),
- ("How to edit", f(bold=True)),
- ("Cells with a light yellow fill are inputs. Grey-headed columns (Score, Rating, Days overdue, Overdue, Residual score) are formulas and should not be overwritten.", f()),
- ("Likelihood, Impact, Treatment and Status use drop-downs. Rating band thresholds live on the Scoring Method sheet and drive all ratings.", f()),
- ("Days overdue uses TODAY(), so it updates whenever the file is opened. Closed and Accepted risks are never counted as overdue.", f()),
- ("To add a risk, copy the last row down and extend the formulas; the Summary sheet counts rows 5 to 100.", f()),
+ ("Editing", f(bold=True)),
+ ("Yellow cells are inputs. Grey header columns are formulas, so don't type over them.", f()),
+ ("Days overdue uses TODAY(), so it changes each day. Closed and Accepted risks never count as overdue.", f()),
+ ("To add a risk, copy the last row down. The Summary counts rows 5 to 100.", f()),
  ("", None),
- (f"Version 0.1, prepared {dt.date(2026,10,8):%d %B %Y}.", f(italic=True, color="595959")),
+ (f"Version 0.1, {dt.date(2026,10,8):%d %B %Y}", f(italic=True, color="595959")),
 ]
 for i, (text, font) in enumerate(lines, 1):
     c = rm.cell(row=i, column=1, value=text)
@@ -169,8 +174,8 @@ for i, (text, font) in enumerate(lines, 1):
 
 # ---------------- Scoring Method ----------------
 sm = wb.create_sheet("Scoring Method")
-sm["A1"] = "Scoring Method"; sm["A1"].font = f(bold=True, size=14, color="1F3864")
-sm["A2"] = "Score = Likelihood x Impact (1 to 25). Assumed scales for this portfolio exercise."
+sm["A1"] = "Scoring Method"; sm["A1"].font = f(bold=True, size=14, color="000000")
+sm["A2"] = "Score = likelihood x impact (1 to 25). The scales are my own."
 sm["A2"].font = f(italic=True)
 hdr = ["Level", "Likelihood", "Meaning (likelihood)", "Impact", "Meaning (impact)"]
 scale = [
@@ -186,7 +191,7 @@ for i, row in enumerate(scale, 5):
     for j, v in enumerate(row, 1):
         c = sm.cell(row=i, column=j, value=v); c.font = f(); c.border = BORDER; c.alignment = WRAP
 
-sm["A11"] = "Rating bands (edit the yellow thresholds)"; sm["A11"].font = f(bold=True)
+sm["A11"] = "Rating bands (change the yellow numbers to move the thresholds)"; sm["A11"].font = f(bold=True)
 bands = [("Low", 1, "Accept; review yearly"),
          ("Medium", 5, "Treat when cost-effective; review every 6 months"),
          ("High", 10, "Treatment plan required; owner reports quarterly"),
@@ -196,13 +201,12 @@ for j, h in enumerate(["Rating", "Minimum score", "Required response"], 1):
 for i, (name, mn, resp) in enumerate(bands, 13):
     sm.cell(row=i, column=1, value=name)
     sm.cell(row=i, column=2, value=mn).fill = INPUT_FILL
-    sm.cell(row=i, column=2).font = f(color="0000FF")
     sm.cell(row=i, column=3, value=resp)
     for j in (1, 3):
         sm.cell(row=i, column=j).font = f()
     for j in (1, 2, 3):
         sm.cell(row=i, column=j).border = BORDER
-sm["A18"] = "Risk appetite: residual score must be below the High threshold (B15). Risks at or above it need a treatment plan or a documented acceptance by the risk owner."
+sm["A18"] = "Risk appetite: the residual score should stay below High (B15). Anything at or above it needs a treatment plan or a signed acceptance from the owner."
 sm["A18"].font = f(italic=True)
 for col, w in zip("ABCDE", (16, 18, 34, 14, 70)):
     sm.column_dimensions[col].width = w
@@ -223,9 +227,9 @@ for col, (h, vals) in lists.items():
 # ---------------- Risk Register ----------------
 ws = wb.create_sheet("Risk Register", 1)
 ws["A1"] = "Information Security Risk Register: Saarland University"
-ws["A1"].font = f(bold=True, size=14, color="1F3864")
-ws["A2"] = "Portfolio exercise based on ISO/IEC 27001:2022. Public facts only; all internal details are invented. Not an official university document."
-ws["A2"].font = f(italic=True, color="C00000")
+ws["A1"].font = f(bold=True, size=14, color="000000")
+ws["A2"] = "Based on ISO/IEC 27001:2022. Risks, scores, owners and dates are made up."
+ws["A2"].font = f(italic=True, color="595959")
 
 cols = [
  ("Risk ID", 8, "in"), ("Risk title", 30, "in"), ("Description (threat and vulnerability)", 55, "in"),
@@ -304,8 +308,8 @@ ws.conditional_formatting.add(f"R{first}:R{rng_end}",
 
 # ---------------- Summary ----------------
 su = wb.create_sheet("Summary", 2)
-su["A1"] = "Risk Summary"; su["A1"].font = f(bold=True, size=14, color="1F3864")
-su["A2"] = "Calculated from the Risk Register (rows 5 to 100). Portfolio exercise."; su["A2"].font = f(italic=True)
+su["A1"] = "Risk Summary"; su["A1"].font = f(bold=True, size=14, color="000000")
+su["A2"] = "Calculated from the Risk Register sheet (rows 5 to 100)."; su["A2"].font = f(italic=True)
 R = "'Risk Register'!"
 rr = lambda c: f"{R}${c}$5:${c}$100"
 kpis = [
@@ -368,7 +372,7 @@ for i, lik in enumerate(range(5, 0, -1), top + 1):
         c.alignment = Alignment(horizontal="center", vertical="center")
         c.border = BORDER
     su.row_dimensions[i].height = 28
-su.cell(row=top + 7, column=1, value="Cell colours show the default rating bands (Low 1-4, Medium 5-9, High 10-14, Critical 15-25).").font = f(italic=True, color="595959")
+su.cell(row=top + 7, column=1, value="Colours follow the rating bands: Low 1-4, Medium 5-9, High 10-14, Critical 15-25.").font = f(italic=True, color="595959")
 su.column_dimensions["A"].width = 36
 for col in "BCDEFGHI":
     su.column_dimensions[col].width = 12
@@ -404,7 +408,7 @@ SOURCES = [
   "Guidance for each Annex A control", "Column L", "Paid standard, no copy included"),
  ("Method", "BSI-Standards overview (incl. BSI-Standard 200-3 risk management)",
   "https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/IT-Grundschutz/BSI-Standards/bsi-standards_node.html",
-  "German government method for risk analysis, used as background. The 5x5 scales here are this exercise's own, not BSI's",
+  "German government method for risk analysis, used as background. The 5x5 scales here are my own, not BSI's",
   "Scoring Method", "Free download from BSI"),
  ("Method", "BSI-Standard 200-3 English PDF",
   "https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi-standard-2003_en_pdf.html",
@@ -421,8 +425,8 @@ SOURCES = [
   "Ransomware at HAW Hamburg (Dec 2022) and University of Duisburg-Essen (Nov 2022)", "R01", "Free web page"),
 ]
 so = wb.create_sheet("Sources")
-so["A1"] = "Sources"; so["A1"].font = f(bold=True, size=14, color="1F3864")
-so["A2"] = "Checked 8 October 2026. Everything not listed here (risks, scores, owners, existing controls, dates) is invented for the exercise."
+so["A1"] = "Sources"; so["A1"].font = f(bold=True, size=14, color="000000")
+so["A2"] = "Checked 8 October 2026. Anything not listed here is made up."
 so["A2"].font = f(italic=True)
 shdr = ["Type", "Source", "Link", "What it supports", "Used in", "Access"]
 for j, h in enumerate(shdr, 1):
@@ -432,26 +436,18 @@ for i, src in enumerate(SOURCES, 5):
         c = so.cell(row=i, column=j, value=v); c.font = f(); c.alignment = WRAP; c.border = BORDER
         if j == 3:
             c.hyperlink = v
-            c.font = f(color="0563C1", underline="single")
+            c.font = f(underline="single")
 for col, w in zip("ABCDEF", (14, 40, 45, 55, 24, 22)):
     so.column_dimensions[col].width = w
 
-if len(sys.argv) > 2:
-    with open(sys.argv[2], "w") as md:
-        md.write("# Sources for the Saarland University risk register\n\n")
-        md.write("Portfolio exercise, not an official university document. Sources checked on 8 October 2026. "
-                 "Only the facts below come from public sources; all risks, scores, owners, existing controls, "
-                 "statuses and dates in the register are invented.\n\n")
-        for sec in dict.fromkeys(s[0] for s in SOURCES):
-            md.write(f"## {sec}\n\n")
-            for _, name, url, what, used, access in (s for s in SOURCES if s[0] == sec):
-                md.write(f"- [{name}]({url})  \n  Supports: {what}.  \n  Used in: {used}. Access: {access}.\n")
-            md.write("\n")
-        md.write("## Files in this folder\n\n"
-                 "- `saarland-university-risk-register.xlsx`: the register (sheets Read Me, Risk Register, Summary, Scoring Method, Lists, Sources).\n"
-                 "- `build_register.py`: Python script that generates the workbook and this file (`python3 build_register.py out.xlsx sources.md`).\n"
-                 "- `sources.md`: this list.\n\n"
-                 "The ISO standards are paid and cannot be shared. The BSI and GDPR documents are free to download from the links above.\n")
+with open(HERE / "sources.txt", "w") as out:
+    out.write("Sources for the risk register\n\n")
+    out.write("Checked on 8 October 2026. Only the facts below are from public sources. "
+              "The risks, scores, owners, controls, statuses and dates are made up.\n")
+    for sec in dict.fromkeys(s[0] for s in SOURCES):
+        out.write(f"\n{sec}\n")
+        for _, name, url, what, used, access in (s for s in SOURCES if s[0] == sec):
+            out.write(f"\n- {name}\n  {url}\n  {what}. Used in: {used}. {access}.\n")
 
 wb.save(OUT)
 print("saved", OUT, len(RISKS), "risks")
