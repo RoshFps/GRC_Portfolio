@@ -2,7 +2,7 @@ GRC Portfolio
 
 My GRC project. I built the main ISMS (ISO 27001) and business continuity
 documents for my own university, Saarland University. The public facts are
-real; the risks, scores, owners and dates are made up.
+real and sourced from the internet; the risks, scores, owners and dates are made up.
 
 Folders
   risk-register/  18 risks with scores, owners, controls and fixes
