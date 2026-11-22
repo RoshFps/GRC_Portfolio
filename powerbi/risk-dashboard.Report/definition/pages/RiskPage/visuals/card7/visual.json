@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card7",
+  "position": {
+    "x": 262,
+    "y": 230,
+    "z": 0,
+    "height": 95,
+    "width": 242
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Risk"
+                    }
+                  },
+                  "Property": "Still too risky after fixes"
+                }
+              },
+              "queryRef": "Risk.Still too risky after fixes",
+              "nativeQueryRef": "Still too risky after fixes"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

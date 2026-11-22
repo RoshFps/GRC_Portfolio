@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "card8",
+  "position": {
+    "x": 514,
+    "y": 230,
+    "z": 0,
+    "height": 95,
+    "width": 242
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Risk"
+                    }
+                  },
+                  "Property": "Big danger and fix is late"
+                }
+              },
+              "queryRef": "Risk.Big danger and fix is late",
+              "nativeQueryRef": "Big danger and fix is late"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,173 @@
+table Risk
+
+	column 'Risk number'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Risk number
+
+	column 'What could go wrong'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: What could go wrong
+
+	column 'Type of risk'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Type of risk
+
+	column 'Person in charge'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Person in charge
+
+	column 'How likely (1-5)'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: How likely (1-5)
+
+	column 'How bad (1-5)'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: How bad (1-5)
+
+	column 'How likely after fixes'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: How likely after fixes
+
+	column 'How bad after fixes'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: How bad after fixes
+
+	column 'What we do about it'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: What we do about it
+
+	column 'Planned fix'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Planned fix
+
+	column 'Progress'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Progress
+
+	column 'Fix due date'
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: Fix due date
+
+	column 'Danger before fixes' = Risk[How likely (1-5)] * Risk[How bad (1-5)]
+		dataType: int64
+		isDataTypeInferred: true
+		summarizeBy: none
+
+	column 'Danger after fixes' = Risk[How likely after fixes] * Risk[How bad after fixes]
+		dataType: int64
+		isDataTypeInferred: true
+		summarizeBy: none
+
+	column 'Danger level' = IF ( Risk[Danger before fixes] >= 15, "Critical", IF ( Risk[Danger before fixes] >= 10, "High", IF ( Risk[Danger before fixes] >= 5, "Medium", "Low" ) ) )
+		dataType: string
+		isDataTypeInferred: true
+		summarizeBy: none
+
+	column 'Still open' = IF ( Risk[Progress] = "Closed" || Risk[Progress] = "Accepted", 0, 1 )
+		dataType: int64
+		isDataTypeInferred: true
+		summarizeBy: none
+
+	column 'Days late' = IF ( Risk[Still open] = 1 && Risk[Fix due date] < TODAY (), DATEDIFF ( Risk[Fix due date], TODAY (), DAY ), 0 )
+		dataType: int64
+		isDataTypeInferred: true
+		summarizeBy: none
+
+	column 'Is late' = IF ( Risk[Days late] > 0, 1, 0 )
+		dataType: int64
+		isDataTypeInferred: true
+		summarizeBy: none
+
+	column 'Is biggest danger' = IF ( Risk[Danger before fixes] >= 15, 1, 0 )
+		dataType: int64
+		isDataTypeInferred: true
+		summarizeBy: none
+
+	column 'Is too risky after fixes' = IF ( Risk[Danger after fixes] >= 10, 1, 0 )
+		dataType: int64
+		isDataTypeInferred: true
+		summarizeBy: none
+
+	column 'Is big danger and late' = IF ( Risk[Danger before fixes] >= 10 && Risk[Days late] > 0, 1, 0 )
+		dataType: int64
+		isDataTypeInferred: true
+		summarizeBy: none
+
+	measure 'Risks we track' = COUNTROWS ( Risk )
+		formatString: 0
+
+	measure 'Still to deal with' = SUM ( Risk[Still open] )
+		formatString: 0
+
+	measure 'Fixes that are late' = SUM ( Risk[Is late] )
+		formatString: 0
+
+	measure 'Share that is late' = DIVIDE ( [Fixes that are late], [Still to deal with] )
+		formatString: 0%
+
+	measure 'Danger removed' = 1 - DIVIDE ( SUM ( Risk[Danger after fixes] ), SUM ( Risk[Danger before fixes] ) )
+		formatString: 0%
+
+	measure 'Biggest dangers today' = SUM ( Risk[Is biggest danger] )
+		formatString: 0
+
+	measure 'Still too risky after fixes' = SUM ( Risk[Is too risky after fixes] )
+		formatString: 0
+
+	measure 'Big danger and fix is late' = SUM ( Risk[Is big danger and late] )
+		formatString: 0
+
+	measure 'Average danger score' = AVERAGE ( Risk[Danger before fixes] )
+		formatString: 0.0
+
+	measure 'Heat Colour' = IF ( MAX ( Risk[Danger before fixes] ) >= 15, "#C00000", IF ( MAX ( Risk[Danger before fixes] ) >= 10, "#F4B183", IF ( MAX ( Risk[Danger before fixes] ) >= 5, "#FFE699", "#C6EFCE" ) ) )
+
+	measure 'Heat Colour After' = IF ( MAX ( Risk[Danger after fixes] ) >= 15, "#C00000", IF ( MAX ( Risk[Danger after fixes] ) >= 10, "#F4B183", IF ( MAX ( Risk[Danger after fixes] ) >= 5, "#FFE699", "#C6EFCE" ) ) )
+
+	partition Risk = m
+		mode: import
+		source =
+				let
+					Source = #table(
+						type table [#"Risk number" = text, #"What could go wrong" = text, #"Type of risk" = text, #"Person in charge" = text, #"How likely (1-5)" = Int64.Type, #"How bad (1-5)" = Int64.Type, #"How likely after fixes" = Int64.Type, #"How bad after fixes" = Int64.Type, #"What we do about it" = text, #"Planned fix" = text, #"Progress" = text, #"Fix due date" = date],
+						{
+						{"R01", "Ransomware on central IT infrastructure", "Cyber attack", "Head of University IT Centre (HIZ)", 4, 5, 2, 4, "Mitigate", "Introduce offline/immutable backup copy, tested quarterly restore, EDR on servers", "In progress", #date(2026, 12, 31)},
+						{"R02", "Phishing and theft of staff or student credentials", "Cyber attack", "Chief Information Security Officer (CISO)", 5, 3, 3, 2, "Mitigate", "Roll out MFA for all staff accounts; yearly phishing simulation and e-learning", "In progress", #date(2026, 9, 30)},
+						{"R03", "Leak of sensitive research data", "Data protection", "Vice President for Research", 3, 5, 2, 4, "Mitigate", "Classification scheme for research data; encrypted research storage offering; pseudonymisation guideline", "Planned", #date(2027, 3, 31)},
+						{"R04", "Loss or theft of laptops and mobile devices", "Physical / human", "Chief Information Security Officer (CISO)", 4, 3, 2, 2, "Mitigate", "Mandatory full-disk encryption and device management for university-owned laptops", "In progress", #date(2026, 8, 31)},
+						{"R05", "Outage of a critical IT or network supplier", "Third party", "Head of University IT Centre (HIZ)", 2, 4, 2, 3, "Mitigate", "Supplier risk review for top 10 IT suppliers; document fallback for loss of uplink", "Open", #date(2027, 1, 31)},
+						{"R06", "Unpatched servers run by institutes (shadow IT)", "Vulnerability", "Chief Information Security Officer (CISO)", 4, 4, 2, 3, "Mitigate", "Asset inventory for all servers on the campus network; monthly external scanning with follow-up", "Open", #date(2026, 7, 31)},
+						{"R07", "Campus management system failure during enrolment or exam registration", "Availability", "Head of Student Services", 2, 4, 1, 3, "Mitigate", "Load test before semester start; documented manual fallback and deadline extension procedure", "Planned", #date(2027, 2, 28)},
+						{"R08", "Misuse of privileged administrator accounts", "Insider / access", "Head of University IT Centre (HIZ)", 2, 5, 1, 4, "Mitigate", "Privileged access review twice a year; central logging of admin actions", "Open", #date(2027, 3, 31)},
+						{"R09", "Accounts not removed after people leave", "Insider / access", "Director of Human Resources", 4, 3, 2, 2, "Mitigate", "Automated joiner-mover-leaver process fed by HR and student records", "In progress", #date(2026, 11, 30)},
+						{"R10", "Personal data exposed through misconfigured file sharing", "Data protection", "Data Protection Officer", 3, 4, 2, 3, "Mitigate", "Default expiry on sharing links; quarterly report of public shares to owners", "Planned", #date(2027, 1, 31)},
+						{"R11", "Espionage targeting research and knowledge transfer", "Cyber attack", "Vice President for Research", 3, 4, 2, 3, "Mitigate", "Security briefing for high-risk research groups; segmented network for sensitive projects", "Open", #date(2027, 6, 30)},
+						{"R12", "Fire, water or power failure in the data centre", "Physical / environmental", "Head of Facilities Management", 2, 5, 1, 4, "Mitigate", "Move backup copy to a second site on campus; test UPS and generator yearly", "In progress", #date(2026, 10, 31)},
+						{"R13", "Denial-of-service attack on website and network", "Cyber attack", "Head of University IT Centre (HIZ)", 3, 3, 3, 3, "Accept", "Accept residual risk; keep provider DDoS filter and document escalation contact", "Accepted", #date(2026, 6, 30)},
+						{"R14", "Insecure software developed in-house", "Vulnerability", "Chief Information Security Officer (CISO)", 3, 3, 2, 2, "Mitigate", "Short secure coding guideline; security check before a web app goes public", "Planned", #date(2027, 4, 30)},
+						{"R15", "Attacks detected too late", "Detection / response", "Chief Information Security Officer (CISO)", 4, 4, 2, 3, "Mitigate", "Central log platform for core systems; written incident response plan with on-call list", "In progress", #date(2026, 9, 15)},
+						{"R16", "Insecure lab equipment and building systems on the campus network", "Vulnerability", "Head of Facilities Management", 3, 4, 2, 3, "Mitigate", "Separate network zones for building systems and lab devices", "Open", #date(2027, 6, 30)},
+						{"R17", "Loss of key IT staff and knowledge", "People", "Head of University IT Centre (HIZ)", 3, 3, 2, 2, "Mitigate", "Runbooks for top 15 services; named deputy for every critical system", "Planned", #date(2027, 3, 31)},
+						{"R18", "Confidential data entered into public AI tools", "Data protection", "Data Protection Officer", 4, 3, 2, 2, "Mitigate", "AI usage guideline; offer a contracted AI service with data protection agreement", "In progress", #date(2026, 12, 31)}
+						})
+				in
+					Source
+
+	annotation PBI_ResultType = Table
